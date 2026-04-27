@@ -674,7 +674,7 @@
         .carousel {
             position: relative;
             width: 100%;
-            height: 220px;
+            height: 320px;
             overflow: hidden;
             border-bottom: 1px solid var(--color-border);
             cursor: grab;
@@ -707,6 +707,7 @@
             height: 100%;
             object-fit: cover;
             pointer-events: none;
+            cursor: zoom-in;
         }
 
         /* Arrow buttons */
@@ -789,6 +790,134 @@
             border-radius: var(--radius-full);
             z-index: 3;
             letter-spacing: 0.5px;
+        }
+
+        /* ── Lightbox / Image Popup ── */
+        .lightbox-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.92);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.35s ease, visibility 0.35s ease;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .lightbox-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .lightbox-content {
+            position: relative;
+            max-width: 90vw;
+            max-height: 85vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox-content img {
+            max-width: 90vw;
+            max-height: 85vh;
+            object-fit: contain;
+            border-radius: var(--radius-md);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            transform: scale(0.92);
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .lightbox-overlay.active .lightbox-content img {
+            transform: scale(1);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 24px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #FFFFFF;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10001;
+            transition: all var(--transition-base);
+        }
+
+        .lightbox-close:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: rotate(90deg);
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #FFFFFF;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10001;
+            transition: all var(--transition-base);
+        }
+
+        .lightbox-nav:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .lightbox-nav--prev {
+            left: 20px;
+        }
+
+        .lightbox-nav--next {
+            right: 20px;
+        }
+
+        .lightbox-counter {
+            position: absolute;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            z-index: 10001;
+        }
+
+        .lightbox-caption {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 15px;
+            font-weight: 500;
+            text-align: center;
+            max-width: 80vw;
+            z-index: 10001;
         }
 
         .project-card-body {
@@ -1182,6 +1311,7 @@
             .education-grid { grid-template-columns: 1fr; }
             .skills-grid { grid-template-columns: 1fr; }
             .projects-grid { grid-template-columns: 1fr; }
+            .carousel { height: 280px; }
             .experience-grid { grid-template-columns: 1fr; }
             .contact-grid { grid-template-columns: 1fr; }
 
@@ -1200,6 +1330,12 @@
             .hero-role { font-size: 18px; }
             .container { padding: 0 16px; }
             .exp-card-header { flex-direction: column; }
+            .carousel { height: 220px; }
+
+            .lightbox-nav { width: 38px; height: 38px; font-size: 14px; }
+            .lightbox-nav--prev { left: 10px; }
+            .lightbox-nav--next { right: 10px; }
+            .lightbox-close { top: 12px; right: 12px; width: 38px; height: 38px; font-size: 16px; }
         }
     </style>
 </head>
@@ -1461,7 +1597,7 @@
                         <h3 class="project-card-title">Dashboard NMS</h3>
                         <p class="project-card-desc">Network Management System dashboard for real-time monitoring and managing network infrastructure with comprehensive analytics.</p>
                         <div class="project-card-actions">
-                            <a href="https://github.com/Ihsan-Nurhadi" target="_blank" rel="noopener" class="btn btn-sm btn-outline">
+                            <a href="https://github.com/Ihsan-Nurhadi/cek_trigger" target="_blank" rel="noopener" class="btn btn-sm btn-outline">
                                 <i class="fab fa-github"></i> GitHub
                             </a>
                         </div>
@@ -1485,7 +1621,7 @@
                         <h3 class="project-card-title">Dashboard Rectifier</h3>
                         <p class="project-card-desc">Rectifier monitoring dashboard providing real-time device data, performance metrics, and advanced reporting capabilities.</p>
                         <div class="project-card-actions">
-                            <a href="https://github.com/Ihsan-Nurhadi" target="_blank" rel="noopener" class="btn btn-sm btn-outline">
+                            <a href="https://github.com/Ihsan-Nurhadi/Dashboard_Rectifier_Multisite" target="_blank" rel="noopener" class="btn btn-sm btn-outline">
                                 <i class="fab fa-github"></i> GitHub
                             </a>
                         </div>
@@ -1511,7 +1647,7 @@
                         <h3 class="project-card-title">Dashboard Verticality</h3>
                         <p class="project-card-desc">Comprehensive verticality monitoring dashboard with landing page, live monitoring, and detailed reporting features.</p>
                         <div class="project-card-actions">
-                            <a href="https://github.com/Ihsan-Nurhadi" target="_blank" rel="noopener" class="btn btn-sm btn-outline">
+                            <a href="https://github.com/rianashari/Structural-Health-Monitoring-System" target="_blank" rel="noopener" class="btn btn-sm btn-outline">
                                 <i class="fab fa-github"></i> GitHub
                             </a>
                         </div>
@@ -1571,6 +1707,21 @@
                             <li>Completed intensive 10-day Data Analytics training</li>
                             <li>Participated in case study presentations and peer reviews</li>
                             <li>Conducted key metric evaluations and funnel analysis</li>
+                        </ul>
+                    </div>
+                    <h3 class="experience-col-title">
+                        <i class="fas fa-graduation-cap"></i>
+                        Professional Jobs
+                    </h3>
+                    <div class="exp-card">
+                        <div class="exp-card-header">
+                            <h4 class="exp-card-title">Research and Development - PT Nayaka Pratama</h4>
+                            <span class="exp-card-date">Nov 2025 – April 2026</span>
+                        </div>
+                        <ul class="exp-card-list">
+                            <li>Assemblying material to build 1000+ fully functional industrial device on site</li>
+                            <li>Build 3 monitoring dashboard ( Rectifier, NMS and Verticality) using React , Django and MQTT as  protocol to test in development before production</li>
+                            <li>Hosting all the monitoring dashboard so it can get online with docker and nginx on VPS </li>
                         </ul>
                     </div>
                 </div>
@@ -1744,6 +1895,18 @@
     <button class="back-to-top" id="back-to-top" aria-label="Back to top">
         <i class="fas fa-arrow-up"></i>
     </button>
+
+    <!-- Lightbox Popup -->
+    <div class="lightbox-overlay" id="lightbox-overlay">
+        <button class="lightbox-close" id="lightbox-close" aria-label="Close"><i class="fas fa-times"></i></button>
+        <button class="lightbox-nav lightbox-nav--prev" id="lightbox-prev" aria-label="Previous image"><i class="fas fa-chevron-left"></i></button>
+        <button class="lightbox-nav lightbox-nav--next" id="lightbox-next" aria-label="Next image"><i class="fas fa-chevron-right"></i></button>
+        <div class="lightbox-content">
+            <img id="lightbox-img" src="" alt="">
+        </div>
+        <span class="lightbox-caption" id="lightbox-caption"></span>
+        <span class="lightbox-counter" id="lightbox-counter"></span>
+    </div>
 
     <!-- ═══════════════════════════════════════
          SCRIPTS
@@ -1970,6 +2133,116 @@
             // Start auto-play
             startAutoPlay();
         });
+
+        // ══════════════════════════════════════════
+        //  LIGHTBOX / IMAGE POPUP
+        // ══════════════════════════════════════════
+        (function() {
+            const overlay = document.getElementById('lightbox-overlay');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const lightboxCaption = document.getElementById('lightbox-caption');
+            const lightboxCounter = document.getElementById('lightbox-counter');
+            const closeBtn = document.getElementById('lightbox-close');
+            const prevBtn = document.getElementById('lightbox-prev');
+            const nextBtn = document.getElementById('lightbox-next');
+
+            let currentImages = [];
+            let currentLightboxIndex = 0;
+
+            function openLightbox(images, index) {
+                currentImages = images;
+                currentLightboxIndex = index;
+                updateLightboxImage();
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeLightbox() {
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            function updateLightboxImage() {
+                const img = currentImages[currentLightboxIndex];
+                lightboxImg.src = img.src;
+                lightboxImg.alt = img.alt;
+                lightboxCaption.textContent = img.alt || '';
+                lightboxCounter.textContent = `${currentLightboxIndex + 1} / ${currentImages.length}`;
+
+                // Hide nav if only one image
+                prevBtn.style.display = currentImages.length <= 1 ? 'none' : 'flex';
+                nextBtn.style.display = currentImages.length <= 1 ? 'none' : 'flex';
+            }
+
+            function nextImage() {
+                currentLightboxIndex = (currentLightboxIndex + 1) % currentImages.length;
+                updateLightboxImage();
+            }
+
+            function prevImage() {
+                currentLightboxIndex = (currentLightboxIndex - 1 + currentImages.length) % currentImages.length;
+                updateLightboxImage();
+            }
+
+            // Click on carousel images to open lightbox
+            document.querySelectorAll('.carousel').forEach(carousel => {
+                const slides = carousel.querySelectorAll('.carousel-slide img');
+                const images = Array.from(slides).map(img => ({ src: img.src, alt: img.alt }));
+
+                slides.forEach((img, index) => {
+                    // Use click on the slide container so drag vs click is distinguishable
+                    const slide = img.parentElement;
+                    let mouseDownX = 0;
+                    let mouseDownY = 0;
+
+                    slide.addEventListener('mousedown', (e) => {
+                        mouseDownX = e.clientX;
+                        mouseDownY = e.clientY;
+                    });
+
+                    slide.addEventListener('mouseup', (e) => {
+                        const diffX = Math.abs(e.clientX - mouseDownX);
+                        const diffY = Math.abs(e.clientY - mouseDownY);
+                        // Only open if it was a click, not a drag
+                        if (diffX < 5 && diffY < 5) {
+                            openLightbox(images, index);
+                        }
+                    });
+
+                    slide.addEventListener('touchstart', (e) => {
+                        mouseDownX = e.touches[0].clientX;
+                        mouseDownY = e.touches[0].clientY;
+                    }, { passive: true });
+
+                    slide.addEventListener('touchend', (e) => {
+                        const touch = e.changedTouches[0];
+                        const diffX = Math.abs(touch.clientX - mouseDownX);
+                        const diffY = Math.abs(touch.clientY - mouseDownY);
+                        if (diffX < 5 && diffY < 5) {
+                            openLightbox(images, index);
+                        }
+                    });
+                });
+            });
+
+            // Close lightbox
+            closeBtn.addEventListener('click', closeLightbox);
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) closeLightbox();
+            });
+
+            // Navigation
+            nextBtn.addEventListener('click', (e) => { e.stopPropagation(); nextImage(); });
+            prevBtn.addEventListener('click', (e) => { e.stopPropagation(); prevImage(); });
+
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (!overlay.classList.contains('active')) return;
+                if (e.key === 'Escape') closeLightbox();
+                if (e.key === 'ArrowRight') nextImage();
+                if (e.key === 'ArrowLeft') prevImage();
+            });
+        })();
     </script>
 </body>
 </html>
